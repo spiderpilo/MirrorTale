@@ -11,7 +11,6 @@ MirrorTale is an AI-powered reflection companion that transforms your daily thou
 - 🎭 Consistent character + themed storytelling
 
 ## 🧩 Tech Stack
-
 Frontend:
 - React (Vite)
 - Framer Motion
@@ -21,7 +20,6 @@ Backend:
 - OpenAI API (GPT-5.4, GPT-Image)
 
 ## 🔁 How it works
-
 1. User reflects on their day
 2. AI asks deeper questions
 3. Conversation is transformed into a narrative
@@ -30,31 +28,27 @@ Backend:
 
 ## 🚀 Running locally
 
-### Frontend
-
-```bash
+## Frontend
+bash
 npm install
 npm run dev
 
-### Backend
+## Backend
 cd backend
 npm install
 npm run dev
 
-### Vision 
-
+## Vision 
 MirrorTale aims to turn reflection into something tangible — a story you can see, revisit, and understand.
 
-### 🛠 Future Improvements
-
+## 🛠 Future Improvements
 - Save stories (localStorage / database)
 - Voice narration
 - Export as PDF
 - Better page flip animations
 - Character reference locking for stronger visual consistency
 
-### 👨‍💻 Author
-
+## 👨‍💻 Authors
 Piolo Patag
 Phuc Hoang
 
