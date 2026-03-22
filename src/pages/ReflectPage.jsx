@@ -9,6 +9,7 @@ import StoryLoadingScreen from '../components/StoryLoadingScreen'
 function ReflectPage() {
   const navigate = useNavigate()
 
+  const [storyMood, setStoryMood] = useState('gentle')
   const [userPhoto, setUserPhoto] = useState('')
   const [hasCapturedPhoto, setHasCapturedPhoto] = useState(false)
 
@@ -94,6 +95,7 @@ function ReflectPage() {
           userName,
           userPhoto,
           conversationHistory,
+          storyMood,
         }),
       })
 
@@ -113,6 +115,7 @@ function ReflectPage() {
           characterDescription: storyData.characterDescription,
           styleGuide: storyData.styleGuide,
           appearanceProfile: storyData.appearanceProfile,
+          storyMood,
           userPhoto,
           pages: storyData.pages,
         }),
@@ -135,6 +138,7 @@ function ReflectPage() {
             styleGuide: imageData.styleGuide || storyData.styleGuide,
             appearanceProfile:
               imageData.appearanceProfile || storyData.appearanceProfile,
+            storyMood,
             pages: imageData.pages,
           },
         },
@@ -163,6 +167,30 @@ function ReflectPage() {
                 </p>
               </div>
 
+              <div className="story-mood-toggle">
+                <button
+                  type="button"
+                  className={`mood-option ${storyMood === 'gentle' ? 'active gentle' : ''}`}
+                  onClick={() => setStoryMood('gentle')}
+                >
+                  Gentle Tale
+                </button>
+
+                <button
+                  type="button"
+                  className={`mood-option ${storyMood === 'ominous' ? 'active ominous' : ''}`}
+                  onClick={() => setStoryMood('ominous')}
+                >
+                  Ominous Tale
+                </button>
+              </div>
+
+              <p className="story-mood-description">
+                {storyMood === 'gentle'
+                  ? 'A softer, magical fairytale with warmth and wonder.'
+                  : 'A darker fantasy tale with eerie tension and haunting creatures.'}
+              </p>
+
               <CameraCapture onCapture={handlePhotoCapture} />
             </>
           ) : (
@@ -173,6 +201,10 @@ function ReflectPage() {
                 {stage === 'intro' && 'Getting to know you'}
                 {stage === 'reflection' && 'Reflecting on your day'}
                 {stage === 'deeper_reflection' && 'Looking deeper'}
+              </p>
+
+              <p className="selected-mood-label">
+                Story mood: {storyMood === 'gentle' ? 'Gentle Tale' : 'Ominous Tale'}
               </p>
 
               <AIMessageBox message={aiMessage} isTyping={isLoading} />
@@ -186,12 +218,14 @@ function ReflectPage() {
 
               {canGenerateStory && (
                 <button
-                  className="story-button"
+                  className={`story-button ${storyMood === 'ominous' ? 'ominous-story-button' : ''}`}
                   onClick={handleGenerateStory}
                   disabled={isGeneratingStory}
                 >
                   {isGeneratingStory
-                    ? 'Illustrating your story...'
+                    ? storyMood === 'ominous'
+                      ? 'Summoning your tale...'
+                      : 'Illustrating your story...'
                     : '✨ Turn this into a story'}
                 </button>
               )}

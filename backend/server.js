@@ -111,7 +111,7 @@ Look at the user's selfie and write one tight paragraph that describes:
 - skin tone
 - approximate age impression
 - notable visual traits
-- a calm, neutral description suitable for a whimsical children's storybook
+- a calm, neutral description suitable for a whimsical or dark-fantasy children's storybook
 
 Do NOT identify the person.
 Do NOT mention camera angle or photo quality.
@@ -137,9 +137,58 @@ app.post('/api/story', async (req, res) => {
       conversationHistory = [],
       userName = 'Traveler',
       userPhoto = '',
+      storyMood = 'gentle',
     } = req.body
 
     const appearanceProfile = await buildAppearanceProfile(userPhoto, userName)
+
+    const moodInstructions =
+      storyMood === 'ominous'
+        ? `
+TONE:
+- dark fantasy
+- eerie and suspenseful
+- haunting but beautiful
+- monsters, shadow creatures, ominous beings, or surreal threats are allowed
+- emotionally intense, cinematic, mysterious
+- no graphic gore
+- no body horror
+- no extreme violence
+
+THEME DIRECTION:
+Favor worlds like:
+- abandoned towers
+- whispering forests
+- black seas
+- moonlit ruins
+- storm kingdoms
+- caves with ancient watchers
+- haunted valleys
+- forgotten railways
+- eerie libraries
+- ash-covered villages
+`
+        : `
+TONE:
+- warm, magical, reflective
+- whimsical and emotionally safe
+- gentle wonder
+- soft, hopeful, symbolic
+- no scary monsters as central threats
+
+THEME DIRECTION:
+Favor worlds like:
+- hidden gardens
+- floating islands
+- moonlit seas
+- orchards
+- starlit libraries
+- windmill villages
+- sky bridges
+- flower meadows
+- coral kingdoms
+- snowy villages
+`
 
     const storyResponse = await client.responses.create({
       model: 'gpt-5.4',
@@ -151,7 +200,7 @@ You are MirrorTale, a storytelling engine.
 
 Your job:
 - Turn the user's reflection into a fairytale-style story
-- Make it symbolic, warm, emotionally meaningful, and visually coherent
+- Make it symbolic, emotionally meaningful, and visually coherent
 - Do NOT give advice
 - Do NOT sound clinical
 
@@ -159,33 +208,9 @@ CRITICAL GOALS:
 1. Create ONE consistent main character for the entire story
 2. Create ONE consistent world/theme for the entire story
 3. Avoid overusing the same motifs across different stories
-4. Do NOT default to lantern + forest unless it genuinely fits the user's reflection
+4. Only use lantern imagery if it genuinely fits the user's reflection
 
-THEME VARIETY:
-Choose the story world based on the emotional tone of the reflection.
-Possible themes/settings include:
-- moonlit sea
-- floating islands
-- hidden garden
-- snowy mountain village
-- rain-soaked city of paper umbrellas
-- desert of glass dunes
-- clocktower town
-- starlit library
-- valley of birds
-- coral kingdom
-- forgotten railway
-- hillside orchard
-- mirror lake
-- candlelit theatre
-- sky bridge kingdom
-- gentle storm coast
-- mountain temple path
-- underground glowing cave
-- meadow of giant flowers
-- old village of windmills
-
-You may use other original themes too.
+${moodInstructions}
 
 OUTPUT RULES:
 - Exactly 7 pages
@@ -195,6 +220,7 @@ OUTPUT RULES:
 - Include a beginning, middle, and end
 - Use soft, storybook-style language
 - Keep visual continuity across pages
+- If storyMood is ominous, the story may be scary, but it must remain imaginative and non-graphic
 
 Return ONLY valid JSON in this exact format:
 {
@@ -240,6 +266,7 @@ Return ONLY valid JSON in this exact format:
           role: 'user',
           content: `
 User name: ${userName}
+Story mood: ${storyMood}
 
 Appearance profile derived from the user's selfie:
 ${appearanceProfile}
@@ -270,6 +297,7 @@ ${JSON.stringify(conversationHistory, null, 2)}
       characterDescription: parsedStory.characterDescription,
       styleGuide: parsedStory.styleGuide,
       appearanceProfile,
+      storyMood,
       pages: parsedStory.pages,
     })
   } catch (error) {
@@ -289,13 +317,32 @@ app.post('/api/story-images', async (req, res) => {
       characterDescription = '',
       styleGuide = '',
       appearanceProfile = '',
-      userPhoto = '',
+      storyMood = 'gentle',
       pages = [],
     } = req.body
 
     if (!pages.length) {
       return res.status(400).json({ error: 'No pages provided.' })
     }
+
+    const moodImageRules =
+      storyMood === 'ominous'
+        ? `
+VISUAL MOOD:
+- dark fantasy
+- eerie lighting
+- shadowy monsters or ominous creatures may appear
+- suspenseful, haunting atmosphere
+- non-graphic
+- beautiful and cinematic rather than gory
+`
+        : `
+VISUAL MOOD:
+- warm fantasy
+- soft light
+- magical and reflective
+- gentle and wonder-filled
+`
 
     const pagesWithImages = await Promise.all(
       pages.map(async (page, index) => {
@@ -316,6 +363,8 @@ ${characterDescription}
 LOCKED ILLUSTRATION STYLE:
 ${styleGuide}
 
+${moodImageRules}
+
 PAGE-SPECIFIC SCENE:
 ${page.imagePrompt}
 
@@ -324,7 +373,7 @@ IMPORTANT RULES:
 - Keep the same face, hair, and overall identity across all pages
 - Keep the same world and style across all pages
 - No text inside the image
-- Whimsical, painterly, warm, storybook feel
+- Painterly storybook feel
         `.trim()
 
         const imageResult = await client.images.generate({
@@ -353,6 +402,7 @@ IMPORTANT RULES:
       characterDescription,
       styleGuide,
       appearanceProfile,
+      storyMood,
       pages: pagesWithImages,
     })
   } catch (error) {
