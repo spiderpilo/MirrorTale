@@ -42,39 +42,40 @@ Images are generated for each page
 Story is displayed as an interactive book
 
 ## 🚀 Getting Started
+
 1. Clone the repo
-git clone https://github.com/your-username/mirrortale.git
-cd mirrortale
+- git clone https://github.com/spiderpilo/MirrorTale
+- cd mirrortale
 
 2. Install dependencies
-npm install
+- npm install
 
 Frontend
-npm install
+- npm install
 
 Backend
-cd backend
-npm install
+- cd backend
+- npm install
 
 3. Set up environment variables
 
-Create a .env file inside the backend folder:
+- Create a .env file inside the backend folder:
 
 OPENAI_API_KEY=your_api_key_here
 PORT=5001
 
 4. Run the app
 
-Start backend
-cd backend
-npm run dev
+- Start backend
+- cd backend
+- npm run dev
 
 You should see:
 
 MirrorTale backend running on http://localhost:5001
 
-Start frontend
-npm run dev
+- Start frontend
+- npm run dev
 
 Then open:
 
