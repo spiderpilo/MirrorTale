@@ -17,20 +17,21 @@ Instead of telling users what to do, MirrorTale asks Socratic-style questions th
 📄 Export as PDF — save meaningful stories
 🧩 Tech Stack
 
-## Frontend
+### Frontend
 
 React (Vite)
 Framer Motion
 
-## Backend
+### Backend
 
 Node.js
 Express
 
-## AI
+### AI
 
 OpenAI GPT API (conversation + story generation)
 Image generation API
+
 ## 🧠 How It Works
 User starts a reflection session
 AI asks thoughtful, open-ended questions
@@ -39,15 +40,19 @@ User clicks “Generate Story”
 AI creates a narrative across 7 pages
 Images are generated for each page
 Story is displayed as an interactive book
+
 ## 🚀 Getting Started
 1. Clone the repo
 git clone https://github.com/your-username/mirrortale.git
 cd mirrortale
 
 2. Install dependencies
-# Frontend
 npm install
-# Backend
+
+Frontend
+npm install
+
+Backend
 cd backend
 npm install
 
