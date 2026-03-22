@@ -1,4 +1,4 @@
-### MirrorTale 🌙
+# MirrorTale 🌙
 
 An AI-powered reflection companion that turns your thoughts into a story.
 
