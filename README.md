@@ -63,7 +63,7 @@ PORT=5001
 
 ### 4. Run the app
 
-- Start backend
+Start backend
 - cd backend
 - npm run dev
 
@@ -71,7 +71,7 @@ You should see:
 
 MirrorTale backend running on http://localhost:5001
 
-- Start frontend
+Start frontend
 - npm run dev
 
 Then open:
@@ -110,6 +110,6 @@ MirrorTale aims to make reflection something you can see, revisit, and understan
 
 
 ## 👨‍💻 Authors
-Piolo Patag
-Phuc Hoang
+- Piolo Patag
+- Phuc Hoang
 
