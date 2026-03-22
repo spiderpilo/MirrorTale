@@ -1,111 +1,333 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #f5efff;
+  background: #090014;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+html,
+body,
+#root {
   margin: 0;
+  min-height: 100%;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(66, 19, 99, 0.35), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(23, 76, 55, 0.18), transparent 30%),
+    linear-gradient(180deg, #0a0015 0%, #120022 45%, #140024 100%);
+  color: #f5efff;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.reflect-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 20px;
+}
+
+.reflect-shell {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.face-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.face-ring {
+  width: 310px;
+  height: 310px;
+  border: 10px solid #57ff41;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at center, rgba(45, 10, 18, 0.95) 0%, rgba(16, 4, 10, 0.98) 70%);
+  box-shadow: 0 0 55px rgba(87, 255, 65, 0.22);
+}
+
+.face-video {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.ai-message-box {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(23, 16, 38, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 24px 26px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ai-message-text {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.user-reply-box {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(23, 16, 38, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 22px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.reply-label {
+  display: block;
+  font-size: 0.95rem;
+  color: rgba(245, 239, 255, 0.82);
+  margin-bottom: 10px;
+}
+
+.reply-input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 7, 20, 0.88);
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 16px 18px;
+  outline: none;
+}
+
+.reply-button {
+  width: 100%;
+  margin-top: 16px;
+  border: none;
+  border-radius: 18px;
+  padding: 15px 18px;
+  background: linear-gradient(180deg, #64ff50 0%, #46d936 100%);
+  color: #081105;
+  font-weight: 700;
+}
+
+.reply-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.story-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 20px;
+}
+
+.story-shell {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.story-title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #f5efff;
+}
+
+.storybook-container {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.storybook-page {
+  min-height: 420px;
+  background: linear-gradient(180deg, rgba(255, 248, 235, 0.98), rgba(246, 236, 220, 0.96));
+  color: #3a2b1f;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(90, 60, 30, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.storybook-page-number {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  color: rgba(58, 43, 31, 0.6);
+}
+
+.storybook-page-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storybook-page-text p {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 560px;
+}
+
+.storybook-controls {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.storybook-nav-button {
+  min-width: 130px;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  background: rgba(23, 16, 38, 0.9);
+  color: #f5efff;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.storybook-nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.storybook-container {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.storybook-page {
+  min-height: 420px;
+  background: linear-gradient(180deg, rgba(255, 248, 235, 0.98), rgba(246, 236, 220, 0.96));
+  color: #3a2b1f;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(90, 60, 30, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.storybook-page-number {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  color: rgba(58, 43, 31, 0.6);
+}
+
+.storybook-page-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storybook-page-text p {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 560px;
+}
+
+.storybook-controls {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.storybook-nav-button {
+  min-width: 130px;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  background: rgba(23, 16, 38, 0.9);
+  color: #f5efff;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.storybook-nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.storybook-image-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.storybook-image {
+  width: 100%;
+  max-width: 520px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.storybook-page {
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.storybook-page {
+  min-height: 420px;
+  background: linear-gradient(180deg, rgba(255, 248, 235, 0.98), rgba(246, 236, 220, 0.96));
+  color: #3a2b1f;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(90, 60, 30, 0.08),
+    inset -8px 0 18px rgba(120, 90, 60, 0.06);
+  display: flex;
+  flex-direction: column;
 }
