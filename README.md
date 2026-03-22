@@ -56,7 +56,7 @@ Backend
 
 ### 3. Set up environment variables
 
-- Create a .env file inside the backend folder:
+Create a .env file inside the backend folder:
 
 OPENAI_API_KEY=your_api_key_here
 PORT=5001
