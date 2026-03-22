@@ -35,3 +35,26 @@ Backend:
 ```bash
 npm install
 npm run dev
+
+### Backend
+cd backend
+npm install
+npm run dev
+
+### Vision 
+
+MirrorTale aims to turn reflection into something tangible — a story you can see, revisit, and understand.
+
+### 🛠 Future Improvements
+
+- Save stories (localStorage / database)
+- Voice narration
+- Export as PDF
+- Better page flip animations
+- Character reference locking for stronger visual consistency
+
+### 👨‍💻 Author
+
+Piolo Patag
+Phuc Hoang
+
