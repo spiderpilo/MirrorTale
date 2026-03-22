@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import FaceVideo from '../components/FaceVideo'
 import AIMessageBox from '../components/AIMessageBox'
 import UserReplyBox from '../components/UserReplyBox'
+import StoryLoadingScreen from '../components/StoryLoadingScreen'
 
 function ReflectPage() {
   const navigate = useNavigate()
@@ -127,7 +128,6 @@ function ReflectPage() {
     } catch (error) {
       console.error('Story error:', error)
       setAiMessage('I had trouble creating your story. Please try again.')
-    } finally {
       setIsGeneratingStory(false)
     }
   }
@@ -135,38 +135,42 @@ function ReflectPage() {
   const canGenerateStory = turnCount >= 5
 
   return (
-    <main className="reflect-page">
-      <section className="reflect-shell">
-        <FaceVideo />
+    <>
+      {isGeneratingStory && <StoryLoadingScreen />}
 
-        <p className="stage-label">
-          {stage === 'intro' && 'Getting to know you'}
-          {stage === 'reflection' && 'Reflecting on your day'}
-          {stage === 'deeper_reflection' && 'Looking deeper'}
-        </p>
+      <main className="reflect-page">
+        <section className="reflect-shell">
+          <FaceVideo />
 
-        <AIMessageBox message={aiMessage} />
+          <p className="stage-label">
+            {stage === 'intro' && 'Getting to know you'}
+            {stage === 'reflection' && 'Reflecting on your day'}
+            {stage === 'deeper_reflection' && 'Looking deeper'}
+          </p>
 
-        <UserReplyBox
-          value={userReply}
-          onChange={(e) => setUserReply(e.target.value)}
-          onSubmit={handleSubmit}
-          disabled={isLoading || isGeneratingStory}
-        />
+          <AIMessageBox message={aiMessage} />
 
-        {canGenerateStory && (
-          <button
-            className="story-button"
-            onClick={handleGenerateStory}
-            disabled={isGeneratingStory}
-          >
-            {isGeneratingStory
-              ? 'Illustrating your story...'
-              : 'Turn this into a story'}
-          </button>
-        )}
-      </section>
-    </main>
+          <UserReplyBox
+            value={userReply}
+            onChange={(e) => setUserReply(e.target.value)}
+            onSubmit={handleSubmit}
+            disabled={isLoading || isGeneratingStory}
+          />
+
+          {canGenerateStory && (
+            <button
+              className="story-button"
+              onClick={handleGenerateStory}
+              disabled={isGeneratingStory}
+            >
+              {isGeneratingStory
+                ? 'Illustrating your story...'
+                : 'Turn this into a story'}
+            </button>
+          )}
+        </section>
+      </main>
+    </>
   )
 }
 
