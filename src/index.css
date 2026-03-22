@@ -51,6 +51,8 @@ button {
   gap: 22px;
 }
 
+/* camera intro */
+
 .camera-intro-copy {
   text-align: center;
   margin-bottom: 4px;
@@ -68,6 +70,8 @@ button {
   color: rgba(245, 239, 255, 0.72);
   font-size: 1rem;
 }
+
+/* mood toggle */
 
 .story-mood-toggle {
   display: flex;
@@ -108,6 +112,8 @@ button {
   color: rgba(245, 239, 255, 0.72);
   text-align: center;
 }
+
+/* camera */
 
 .camera-stage {
   display: flex;
@@ -180,6 +186,8 @@ button {
   cursor: not-allowed;
 }
 
+/* face */
+
 .face-wrapper {
   display: flex;
   justify-content: center;
@@ -205,6 +213,8 @@ button {
   object-fit: cover;
   border-radius: 50%;
 }
+
+/* ai + input */
 
 .ai-message-box,
 .user-reply-box {
@@ -261,6 +271,8 @@ button {
   cursor: not-allowed;
 }
 
+/* story action button */
+
 .story-button {
   width: 100%;
   max-width: 760px;
@@ -310,13 +322,23 @@ button {
     0 0 25px rgba(155, 13, 52, 0.22);
 }
 
+/* story page */
+
 .story-shell {
   width: 100%;
-  max-width: 900px;
+  max-width: 980px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
+}
+
+.pdf-export-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 .story-title {
@@ -327,16 +349,64 @@ button {
   color: #f5efff;
 }
 
+.story-meta-line,
+.story-empty-text {
+  margin: 0;
+  color: rgba(245, 239, 255, 0.74);
+  text-align: center;
+}
+
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.story-action-button {
+  min-width: 220px;
+  text-decoration: none;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 22px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease, box-shadow 0.22s ease, filter 0.2s ease;
+}
+
+.story-action-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+}
+
+.story-action-button.primary {
+  background: linear-gradient(180deg, #f0d85d 0%, #e7be45 100%);
+  color: #1b1605;
+  box-shadow: 0 14px 34px rgba(240, 216, 93, 0.22);
+}
+
+.story-action-button.secondary {
+  background: rgba(23, 16, 38, 0.9);
+  color: #f5efff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+/* storybook */
+
 .storybook-container {
   width: 100%;
-  max-width: 760px;
+  max-width: 860px;
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
 .storybook-page {
-  min-height: 420px;
+  min-height: 760px;
   background: linear-gradient(180deg, #fff8eb, #f6ecdc);
   color: #3a2b1f;
   border-radius: 28px;
@@ -347,27 +417,32 @@ button {
     inset -8px 0 18px rgba(120, 90, 60, 0.06);
   transform-style: preserve-3d;
   perspective: 1200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .storybook-page-number {
-  margin-bottom: 20px;
-  font-size: 0.9rem;
+  margin: 0 0 18px;
+  font-size: 0.95rem;
   color: rgba(58, 43, 31, 0.6);
 }
 
 .storybook-image-wrap {
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .storybook-image {
   width: 100%;
-  max-width: 520px;
-  height: 260px;
-  object-fit: cover;
+  max-width: 700px;
+  height: 420px;
+  object-fit: contain;
+  object-position: center;
   border-radius: 20px;
   background: #ddd4c7;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .storybook-image-fallback {
@@ -378,16 +453,18 @@ button {
 }
 
 .storybook-page-text {
+  flex: 1;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 }
 
 .storybook-page-text p {
   margin: 0;
-  font-size: 1.3rem;
-  line-height: 1.7;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.8;
   text-align: center;
-  max-width: 560px;
+  max-width: 720px;
 }
 
 .storybook-controls {
@@ -410,6 +487,8 @@ button {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* loading */
 
 .story-loading-overlay {
   position: fixed;
@@ -485,12 +564,16 @@ button {
   min-height: 24px;
 }
 
+/* typing */
+
 .typing-cursor {
   display: inline-block;
   margin-top: 8px;
   color: rgba(245, 239, 255, 0.8);
   animation: blinkCursor 0.9s steps(1) infinite;
 }
+
+/* animations */
 
 @keyframes blinkCursor {
   0%, 50% {
