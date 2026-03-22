@@ -165,7 +165,7 @@ function ReflectPage() {
             >
               {isGeneratingStory
                 ? 'Illustrating your story...'
-                : 'Turn this into a story'}
+                : '✨ Turn this into a story'}
             </button>
           )}
         </section>
