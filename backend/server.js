@@ -13,7 +13,7 @@ const client = new OpenAI({
 })
 
 app.use(cors())
-app.use(express.json({ limit: '25mb' }))
+app.use(express.json({ limit: '50mb' }))
 
 app.get('/', (req, res) => {
   res.json({ message: 'MirrorTale backend is running' })
@@ -89,9 +89,57 @@ ${stageInstructions[stage] || stageInstructions.reflection}
   }
 })
 
+async function buildAppearanceProfile(userPhoto, userName) {
+  if (!userPhoto) {
+    return `${userName || 'The protagonist'} has gentle, storybook-style features and should remain visually consistent across every illustration.`
+  }
+
+  const response = await client.responses.create({
+    model: 'gpt-5.4',
+    input: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'input_text',
+            text: `
+You are creating a character appearance profile for a storybook illustrator.
+
+Look at the user's selfie and write one tight paragraph that describes:
+- face shape
+- hair color and hairstyle
+- skin tone
+- approximate age impression
+- notable visual traits
+- a calm, neutral description suitable for a whimsical children's storybook
+
+Do NOT identify the person.
+Do NOT mention camera angle or photo quality.
+Do NOT speculate wildly.
+Keep it concrete and reusable for consistent illustration generation.
+            `.trim(),
+          },
+          {
+            type: 'input_image',
+            image_url: userPhoto,
+          },
+        ],
+      },
+    ],
+  })
+
+  return response.output_text
+}
+
 app.post('/api/story', async (req, res) => {
   try {
-    const { conversationHistory = [], userName = 'Traveler' } = req.body
+    const {
+      conversationHistory = [],
+      userName = 'Traveler',
+      userPhoto = '',
+    } = req.body
+
+    const appearanceProfile = await buildAppearanceProfile(userPhoto, userName)
 
     const storyResponse = await client.responses.create({
       model: 'gpt-5.4',
@@ -138,22 +186,6 @@ Possible themes/settings include:
 - old village of windmills
 
 You may use other original themes too.
-Only use lantern imagery if it truly fits the emotional arc.
-
-CHARACTER CONSISTENCY:
-Create a single protagonist and keep them visually consistent across all pages.
-Lock:
-- age impression
-- hairstyle
-- hair color
-- face shape
-- clothing
-- signature accessory
-- overall vibe
-
-STYLE CONSISTENCY:
-Create a single illustration style for the whole story.
-Keep it consistent across all pages.
 
 OUTPUT RULES:
 - Exactly 7 pages
@@ -161,7 +193,6 @@ OUTPUT RULES:
   1. "text" (2 to 4 sentences)
   2. "imagePrompt" (clear illustration prompt for that page)
 - Include a beginning, middle, and end
-- The main character should loosely reflect the user
 - Use soft, storybook-style language
 - Keep visual continuity across pages
 
@@ -210,6 +241,9 @@ Return ONLY valid JSON in this exact format:
           content: `
 User name: ${userName}
 
+Appearance profile derived from the user's selfie:
+${appearanceProfile}
+
 Conversation history:
 ${JSON.stringify(conversationHistory, null, 2)}
           `.trim(),
@@ -235,6 +269,7 @@ ${JSON.stringify(conversationHistory, null, 2)}
       setting: parsedStory.setting,
       characterDescription: parsedStory.characterDescription,
       styleGuide: parsedStory.styleGuide,
+      appearanceProfile,
       pages: parsedStory.pages,
     })
   } catch (error) {
@@ -253,6 +288,8 @@ app.post('/api/story-images', async (req, res) => {
       setting = '',
       characterDescription = '',
       styleGuide = '',
+      appearanceProfile = '',
+      userPhoto = '',
       pages = [],
     } = req.body
 
@@ -270,7 +307,10 @@ Title: ${title}
 Theme: ${theme}
 Setting: ${setting}
 
-LOCKED MAIN CHARACTER:
+LOCKED VISUAL IDENTITY FROM USER SELFIE:
+${appearanceProfile}
+
+LOCKED STORY CHARACTER:
 ${characterDescription}
 
 LOCKED ILLUSTRATION STYLE:
@@ -279,20 +319,12 @@ ${styleGuide}
 PAGE-SPECIFIC SCENE:
 ${page.imagePrompt}
 
-IMPORTANT CONSISTENCY RULES:
-- The main character must look like the SAME person as in every other page
-- Keep the same face, hair, clothing, body proportions, and signature accessory
-- Keep the same visual world and mood across the whole book
-- Do not introduce a totally different character design
-- Do not switch to a different art style
-- Do not add text, captions, or lettering inside the image
-
-IMAGE STYLE:
-- whimsical storybook illustration
-- painterly
-- warm and emotionally gentle
-- visually rich but clean
-- suitable for all ages
+IMPORTANT RULES:
+- The main character should visually resemble the same person described in the selfie-derived appearance profile
+- Keep the same face, hair, and overall identity across all pages
+- Keep the same world and style across all pages
+- No text inside the image
+- Whimsical, painterly, warm, storybook feel
         `.trim()
 
         const imageResult = await client.images.generate({
@@ -320,6 +352,7 @@ IMAGE STYLE:
       setting,
       characterDescription,
       styleGuide,
+      appearanceProfile,
       pages: pagesWithImages,
     })
   } catch (error) {
