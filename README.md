@@ -18,36 +18,33 @@ Instead of telling users what to do, MirrorTale asks Socratic-style questions th
 🧩 Tech Stack
 
 ### Frontend
-
-React (Vite)
-Framer Motion
+- React (Vite)
+- Framer Motion
 
 ### Backend
-
-Node.js
-Express
+- Node.js
+- Express
 
 ### AI
-
-OpenAI GPT API (conversation + story generation)
-Image generation API
+- OpenAI GPT API (conversation + story generation)
+- Image generation API
 
 ## 🧠 How It Works
-User starts a reflection session
-AI asks thoughtful, open-ended questions
-Responses are collected and structured
-User clicks “Generate Story”
-AI creates a narrative across 7 pages
-Images are generated for each page
-Story is displayed as an interactive book
+- User starts a reflection session
+- AI asks thoughtful, open-ended questions
+- Responses are collected and structured
+- User clicks “Generate Story”
+- AI creates a narrative across 7 pages
+- Images are generated for each page
+- Story is displayed as an interactive book
 
 ## 🚀 Getting Started
 
-1. Clone the repo
+### 1. Clone the repo
 - git clone https://github.com/spiderpilo/MirrorTale
 - cd mirrortale
 
-2. Install dependencies
+### 2. Install dependencies
 - npm install
 
 Frontend
@@ -57,14 +54,14 @@ Backend
 - cd backend
 - npm install
 
-3. Set up environment variables
+### 3. Set up environment variables
 
 - Create a .env file inside the backend folder:
 
 OPENAI_API_KEY=your_api_key_here
 PORT=5001
 
-4. Run the app
+### 4. Run the app
 
 - Start backend
 - cd backend
