@@ -41,7 +41,7 @@ function ReflectPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5001/api/reflect', {
+      const response = await fetch('/api/reflect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -88,7 +88,7 @@ function ReflectPage() {
     setIsGeneratingStory(true)
 
     try {
-      const storyRes = await fetch('http://localhost:5001/api/story', {
+      const storyRes = await fetch('/api/story', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -105,7 +105,7 @@ function ReflectPage() {
         throw new Error(storyData.error || 'Failed to generate story.')
       }
 
-      const imageRes = await fetch('http://localhost:5001/api/story-images', {
+      const imageRes = await fetch('/api/story-images', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
