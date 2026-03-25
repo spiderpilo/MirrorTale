@@ -4,6 +4,22 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+async function generatePageImage(prompt, pageNumber) {
+  const imageResult = await client.images.generate({
+    model: 'gpt-image-1.5',
+    prompt,
+    size: '1024x1024',
+  })
+
+  const base64Image = imageResult.data?.[0]?.b64_json
+
+  if (!base64Image) {
+    throw new Error(`Image generation returned no image data for page ${pageNumber}.`)
+  }
+
+  return `data:image/png;base64,${base64Image}`
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -48,10 +64,10 @@ VISUAL MOOD:
 
     for (let index = 0; index < pages.length; index++) {
       const page = pages[index]
+      const pageNumber = index + 1
 
-      try {
-        const prompt = `
-Create a children's storybook illustration for page ${index + 1} of 7.
+      const prompt = `
+Create a children's storybook illustration for page ${pageNumber} of 7.
 
 GLOBAL STORY CONSISTENCY:
 Title: ${title}
@@ -78,31 +94,30 @@ IMPORTANT RULES:
 - Keep the same world and style across all pages
 - No text inside the image
 - Painterly storybook feel
-        `.trim()
+      `.trim()
 
-        const imageResult = await client.images.generate({
-          model: 'gpt-image-1.5',
-          prompt,
-          size: '1024x1024',
-        })
+      try {
+        let image = ''
 
-        const base64Image = imageResult.data?.[0]?.b64_json
+        try {
+          image = await generatePageImage(prompt, pageNumber)
+        } catch (firstError) {
+          console.error(`First image attempt failed for page ${pageNumber}:`, firstError)
 
-        if (!base64Image) {
-          throw new Error(`Image generation returned no image data for page ${index + 1}.`)
+          image = await generatePageImage(prompt, pageNumber)
         }
 
         pagesWithImages.push({
           ...page,
-          image: `data:image/png;base64,${base64Image}`,
+          image,
         })
       } catch (pageError) {
-        console.error(`Story image route error on page ${index + 1}:`, pageError)
+        console.error(`Story image route error on page ${pageNumber}:`, pageError)
 
         pagesWithImages.push({
           ...page,
           image: '',
-          imageError: `Failed to generate image for page ${index + 1}.`,
+          imageError: `Failed to generate image for page ${pageNumber}.`,
         })
       }
     }
