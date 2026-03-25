@@ -4,6 +4,16 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+function cleanJsonText(rawText) {
+  if (!rawText) return ''
+
+  return rawText
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim()
+}
+
 async function buildAppearanceProfile(userPhoto, userName) {
   if (!userPhoto) {
     return `${userName || 'The protagonist'} has gentle, storybook-style features and should remain visually consistent across every illustration.`
@@ -140,6 +150,10 @@ OUTPUT RULES:
 - Use soft, storybook-style language
 - Keep visual continuity across pages
 - If storyMood is ominous, the story may be scary, but it must remain imaginative and non-graphic
+- Return ONLY raw JSON
+- Do NOT wrap the JSON in markdown
+- Do NOT use \`\`\`json fences
+- Do NOT include any explanation before or after the JSON
 
 Return ONLY valid JSON in this exact format:
 {
@@ -197,16 +211,28 @@ ${JSON.stringify(conversationHistory, null, 2)}
       ],
     })
 
-    const rawText = storyResponse.output_text
+    const rawText = storyResponse.output_text || ''
+    const cleanedText = cleanJsonText(rawText)
 
     let parsedStory
 
     try {
-      parsedStory = JSON.parse(rawText)
+      parsedStory = JSON.parse(cleanedText)
     } catch (parseError) {
       console.error('Story JSON parse error:', parseError)
       console.error('Raw response:', rawText)
-      return res.status(500).json({ error: 'Failed to parse story JSON.' })
+      console.error('Cleaned response:', cleanedText)
+
+      return res.status(500).json({
+        error: 'Failed to parse story JSON.',
+        rawPreview: cleanedText.slice(0, 500),
+      })
+    }
+
+    if (!parsedStory?.pages || !Array.isArray(parsedStory.pages) || parsedStory.pages.length !== 7) {
+      return res.status(500).json({
+        error: 'Story JSON was missing required pages.',
+      })
     }
 
     res.status(200).json({

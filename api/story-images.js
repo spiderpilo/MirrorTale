@@ -44,8 +44,12 @@ VISUAL MOOD:
 - gentle and wonder-filled
 `
 
-    const pagesWithImages = await Promise.all(
-      pages.map(async (page, index) => {
+    const pagesWithImages = []
+
+    for (let index = 0; index < pages.length; index++) {
+      const page = pages[index]
+
+      try {
         const prompt = `
 Create a children's storybook illustration for page ${index + 1} of 7.
 
@@ -85,15 +89,23 @@ IMPORTANT RULES:
         const base64Image = imageResult.data?.[0]?.b64_json
 
         if (!base64Image) {
-          throw new Error('Image generation returned no image data.')
+          throw new Error(`Image generation returned no image data for page ${index + 1}.`)
         }
 
-        return {
+        pagesWithImages.push({
           ...page,
           image: `data:image/png;base64,${base64Image}`,
-        }
-      })
-    )
+        })
+      } catch (pageError) {
+        console.error(`Story image route error on page ${index + 1}:`, pageError)
+
+        pagesWithImages.push({
+          ...page,
+          image: '',
+          imageError: `Failed to generate image for page ${index + 1}.`,
+        })
+      }
+    }
 
     res.status(200).json({
       title,
